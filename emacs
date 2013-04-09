@@ -5,9 +5,44 @@
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
+; Themes
 ;(load-theme 'zenburn t)
-(load-theme 'misterioso t)
-;(load-theme 'solarized-dark t)
+;(load-theme 'misterioso t)
+(load-theme 'solarized-dark t)
+
+; Add Marmalade package repo
+(require 'package)
+(add-to-list 'package-archives 
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+; for inferior lisp mode
+(setq inferior-lisp-program "/usr/local/bin/clisp")
+
+; scala mode
+(require 'scala-mode-auto)
+(add-hook 'scala-mode-hook
+            '(lambda ()
+           (scala-mode-feature-electric-mode)
+           ))
+
+; scala ensime settings
+(require 'scala-mode)
+(add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
+(add-to-list 'load-path "~/.emacs.d/site-lisp/ensime/elisp/")
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+; To run scala REPL from emacs
+(push "/usr/local/scala-2.10.1/bin/" exec-path)
+
+; To run SBT shell from emacs
+(push "/usr/local/sbt/bin/" exec-path)
+
+; ensime customization for scala repl
+;(custom-set-variables
+; '( ensime-inf-default-cmd-line '("sbt" "console"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -21,3 +56,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(global-linum-mode t)
